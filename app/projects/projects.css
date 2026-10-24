@@ -1,0 +1,448 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap");
+
+.pj{
+  --bg:#EEF1F7; --ink:#0F1B33; --muted:#2F3B55; --line:#C3CCDF; --paper:#FFFFFF;
+  --cobalt:#2747E0;
+  --font:"Montserrat",system-ui,-apple-system,"Segoe UI",sans-serif;
+
+  /* skala font (ubah di sini untuk menyesuaikan semuanya) */
+  --fs-h2:clamp(1.375rem,2.2vw,1.75rem);
+  --fs-h3:clamp(1.0625rem,1.6vw,1.25rem);
+  --fs-h4:.9375rem;
+  --fs-lead:.875rem;
+  --fs-body:.8125rem;
+  --fs-small:.75rem;
+  --fs-xs:.6875rem;
+
+  /* warna & ukuran latar (ubah di sini untuk menyesuaikan latar) */
+  --grid-size:56px;
+  --grid-line:rgba(11,73,184,.1);
+  --cell-a:rgba(106,155,244,.2);
+  --cell-b:rgba(106,155,244,.11);
+  --glow:rgba(106,155,244,.34);
+
+  font-family:var(--font); color:var(--ink);
+  position:relative;
+  isolation:isolate;
+  min-height:100vh;
+  min-height:100dvh;
+  background:
+    radial-gradient(900px 520px at 50% -8%, rgba(255,255,255,.95) 0%, rgba(255,255,255,0) 70%),
+    linear-gradient(165deg,#FAFCFF 0%,#F1F5FD 50%,#E3ECFC 100%);
+  padding:64px 0 24px;
+  overflow-x:clip;
+}
+.pj *{ box-sizing:border-box; }
+.pj button:not(.gbtn){ font:inherit; color:inherit; cursor:pointer; }
+.pj button:focus-visible,.pj a:focus-visible{ outline:3px solid var(--cobalt); outline-offset:2px; }
+.pj-wrap{ position:relative; z-index:1; max-width:1180px; margin:0 auto; padding:0 24px; }
+
+/* ===== Latar ala Home: grid kanvas + kotak terpilih + glow + kursor ===== */
+.pj-bg{ position:absolute; inset:0; z-index:0; pointer-events:none; overflow:hidden; }
+
+/* grid kanvas, memudar ke arah tepi (beberapa titik fokus karena halaman panjang) */
+.pj-bg::before{
+  content:""; position:absolute; inset:0;
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size:var(--grid-size) var(--grid-size);
+  -webkit-mask-image:
+    radial-gradient(ellipse 62% 440px at 28% 12%, #000 0%, transparent 78%),
+    radial-gradient(ellipse 56% 480px at 82% 36%, #000 0%, transparent 78%),
+    radial-gradient(ellipse 58% 460px at 18% 64%, #000 0%, transparent 78%),
+    radial-gradient(ellipse 60% 440px at 78% 92%, #000 0%, transparent 78%);
+          mask-image:
+    radial-gradient(ellipse 62% 440px at 28% 12%, #000 0%, transparent 78%),
+    radial-gradient(ellipse 56% 480px at 82% 36%, #000 0%, transparent 78%),
+    radial-gradient(ellipse 58% 460px at 18% 64%, #000 0%, transparent 78%),
+    radial-gradient(ellipse 60% 440px at 78% 92%, #000 0%, transparent 78%);
+}
+
+/* kotak grid terisi, sejajar dengan grid 56px, berdenyut pelan */
+.pj-cell{
+  position:absolute; width:var(--grid-size); height:var(--grid-size);
+  background:var(--cell-a);
+  animation:pj-pulse 6s ease-in-out infinite alternate;
+}
+.pj-cell:nth-child(1){ left:calc(var(--grid-size) * 3);  top:calc(var(--grid-size) * 2); }
+.pj-cell:nth-child(2){ left:calc(var(--grid-size) * 4);  top:calc(var(--grid-size) * 2); background:var(--cell-b); animation-delay:-2s; }
+.pj-cell:nth-child(3){ right:calc(var(--grid-size) * 3); top:calc(var(--grid-size) * 6); animation-delay:-4s; }
+.pj-cell:nth-child(4){ left:calc(var(--grid-size) * 2);  top:calc(var(--grid-size) * 13); animation-delay:-1s; }
+.pj-cell:nth-child(5){ right:calc(var(--grid-size) * 2); top:calc(var(--grid-size) * 16); background:var(--cell-b); animation-delay:-3s; }
+.pj-cell:nth-child(6){ left:calc(var(--grid-size) * 6);  bottom:calc(var(--grid-size) * 3); animation-delay:-5s; }
+@keyframes pj-pulse{
+  from{ opacity:.55; }
+  to{ opacity:1; }
+}
+
+/* cahaya lembut */
+.pj-glow{
+  position:absolute; width:min(760px,90vw); aspect-ratio:1; transform:translate(-50%,-50%);
+  border-radius:50%;
+  background:radial-gradient(closest-side, var(--glow), rgba(106,155,244,0));
+}
+.pj-glow--1{ left:78%; top:8%; }
+.pj-glow--2{ left:12%; top:55%; width:min(620px,80vw); opacity:.8; }
+.pj-glow--3{ left:70%; top:96%; width:min(620px,80vw); opacity:.7; }
+
+/* kursor ala Figma */
+.pj-cursor{
+  --c:#0B49B8;
+  position:absolute; display:flex; align-items:flex-start;
+  animation:pj-float 5s ease-in-out infinite alternate;
+}
+.pj-cursor svg{ width:22px; height:22px; color:var(--c); filter:drop-shadow(0 4px 6px rgba(11,42,102,.25)); }
+.pj-cursor b{
+  margin:15px 0 0 -4px; padding:6px 11px; border-radius:999px; background:var(--c); color:#fff;
+  font-size:12px; font-weight:600; line-height:1; white-space:nowrap; box-shadow:0 8px 16px rgba(11,42,102,.22);
+}
+.pj-cursor--a{ right:9%; top:150px; }
+.pj-cursor--b{ --c:#0B2A66; left:7%; top:46%; animation-delay:-2.4s; animation-direction:alternate-reverse; }
+@keyframes pj-float{
+  from{ transform:translate3d(0,0,0); }
+  to{ transform:translate3d(8px,-10px,0); }
+}
+
+/* ===== Filter ===== */
+.pj-bar{ display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px 20px; margin:0 0 56px; }
+.pj-filters{ display:inline-flex; flex-wrap:wrap; gap:8px; }
+.pj-filters .gbtn span{
+  min-width:20px; padding:2px 6px; border-radius:999px; text-align:center;
+  background:rgba(15,27,51,.08); font-size:var(--fs-xs); font-weight:600;
+}
+.pj-filters .gbtn[aria-pressed="true"] span{ background:rgba(255,255,255,.18); }
+.pj-meta{ margin:0; font-size:var(--fs-small); color:var(--muted); }
+
+/* ===== Daftar project ===== */
+.pj-list{ animation:pj-in .35s ease both; }
+@keyframes pj-in{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;} }
+
+.pj-case{ display:grid; grid-template-columns:1.1fr 1fr; gap:64px; align-items:center; padding-bottom:104px; }
+.pj-case.rev .pj-visual{ order:2; }
+/* ===== Project web (GUNZ): laptop besar di atas, teks dua kolom di bawah ===== */
+.pj-case.wide{ grid-template-columns:1fr; gap:56px; }
+.pj-case.wide.rev .pj-visual{ order:0; }
+.pj-case.wide .pj-visual{ padding:60px clamp(20px,5vw,64px) 40px; border-radius:32px; }
+/* cahaya aksen di belakang laptop */
+.pj-visual.web::after{
+  content:""; position:absolute; z-index:0; left:50%; bottom:-140px; width:80%; height:300px; transform:translateX(-50%);
+  background:radial-gradient(closest-side,color-mix(in srgb,var(--accent) 30%,transparent),transparent);
+  pointer-events:none;
+}
+.pj-case.wide .pj-laptops{ max-width:980px; margin:0 auto; }
+
+.pj-case.wide .pj-info{ display:grid; grid-template-columns:1fr 1fr; gap:24px 64px; align-items:start; }
+.pj-case.wide .pj-info h2{ font-size:clamp(1.75rem,3.4vw,2.5rem); margin-top:14px; }
+.pj-case.wide .pj-full,.pj-case.wide .pj-role{ font-size:var(--fs-lead); }
+.pj-case.wide .pj-sum{ max-width:56ch; }
+.pj-case.wide .pj-points{ margin:0; display:grid; gap:10px; }
+.pj-case.wide .pj-points li{
+  position:relative; margin:0; max-width:none; padding:13px 16px 13px 50px;
+  background:transparent; border:1px solid var(--line); border-radius:14px;
+}
+.pj-case.wide .pj-points li::before{
+  content:"\2713"; position:absolute; left:15px; top:12px; width:22px; height:22px; border-radius:50%;
+  display:grid; place-items:center; font-size:.7rem; font-weight:700; line-height:1;
+  color:var(--accent); background:color-mix(in srgb,var(--accent) 14%,white);
+}
+.pj-case.has-showcase{ padding-bottom:64px; }
+
+/* panel visual: terang, mengikuti warna aksen project */
+.pj-visual{
+  position:relative; min-width:0; border-radius:28px; padding:36px 28px; overflow:hidden;
+  display:flex; align-items:center; justify-content:center;
+  isolation:isolate;               /* lapisan glow tidak bocor ke elemen lain */
+  background:transparent;          /* polos: latar halaman terlihat */
+  border:1.5px solid var(--line);
+}
+.pj-visual > *{ position:relative; z-index:1; }   /* konten selalu di atas background */
+.pj-visual.web::after{ z-index:0; }               /* glow tetap di belakang laptop */
+
+/* info */
+.pj-tag{ display:inline-flex; align-items:center; gap:8px; font-size:var(--fs-small); font-weight:600; color:var(--accent); }
+.pj-tag i{ width:8px; height:8px; border-radius:50%; background:var(--accent); display:block; }
+.pj-info h2{ font-weight:700; font-size:var(--fs-h2); line-height:1.1; letter-spacing:-.025em; margin:12px 0 0; }
+.pj-full{ margin:6px 0 0; color:var(--muted); font-size:var(--fs-body); }
+.pj-role{ margin:10px 0 0; font-weight:600; font-size:var(--fs-body); }
+.pj-sum{ margin:16px 0 0; color:var(--muted); font-size:var(--fs-lead); line-height:1.75; max-width:54ch; }
+.pj-about{ margin-top:16px; }
+.pj-about .pj-sum{ margin:0 0 10px; }
+
+.pj-points{ list-style:none; padding:0; margin:22px 0 0; }
+.pj-points li{ border-left:2px solid var(--line); padding:2px 0 2px 14px; margin-bottom:10px; font-size:var(--fs-body); line-height:1.7; max-width:58ch; color:var(--ink); }
+
+/* ===== Blok "Fitur" & "Teknologi" ===== */
+.pj-block{ margin-top:30px; }
+.pj-group{
+  display:flex; align-items:center; gap:12px; margin:0 0 14px;
+  font-size:var(--fs-xs); font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--ink);
+}
+.pj-group::before{ content:""; width:18px; height:3px; border-radius:2px; background:var(--accent); flex:none; }
+.pj-group::after{ content:""; flex:1; height:1px; background:var(--line); }
+
+/* daftar fitur: grid 2 kolom, bernomor */
+.pj-feats{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+.pj-feats li{
+  display:flex; align-items:center; gap:12px; min-width:0; padding:10px 14px 10px 10px;
+  border:1px solid var(--line); border-radius:12px; background:transparent;
+  transition:border-color .2s, transform .2s;
+}
+.pj-feats li:hover{ border-color:color-mix(in srgb,var(--accent) 55%,var(--line)); transform:translateY(-1px); }
+.pj-feats b{
+  flex:none; width:30px; height:30px; border-radius:8px; display:grid; place-items:center;
+  font-size:var(--fs-xs); font-weight:700; letter-spacing:.02em; font-variant-numeric:tabular-nums;
+  color:var(--accent); background:color-mix(in srgb,var(--accent) 12%,transparent);
+  border:1px solid color-mix(in srgb,var(--accent) 22%,transparent);
+}
+.pj-feats span{ font-size:var(--fs-body); font-weight:600; line-height:1.35; color:var(--ink); }
+
+/* teknologi & metode: chip rapi dengan titik aksen */
+.pj-tech{ list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:8px; }
+.pj-tech li{
+  display:inline-flex; align-items:center; gap:8px; padding:7px 14px; border-radius:999px;
+  font-size:var(--fs-small); font-weight:600; color:var(--ink); background:transparent;
+  border:1px solid color-mix(in srgb,var(--accent) 35%,var(--line));
+}
+.pj-tech i{ width:6px; height:6px; border-radius:50%; background:var(--accent); flex:none; }
+.pj-links{ display:flex; gap:12px; margin-top:28px; }
+
+/* ===== Laptop (berdampingan, gambar utuh tanpa terpotong) ===== */
+.pj-laptops{ width:100%; display:flex; justify-content:center; align-items:flex-start; gap:clamp(14px,2vw,22px); padding-bottom:10px; }
+.pj-laptops .pj-laptop{ flex:1 1 0; min-width:0; }
+/* selang-seling turun sedikit, seperti bingkai HP */
+.pj-laptops.multi .pj-laptop:nth-child(even){ margin-top:44px; }
+
+.pj-laptop{ animation:pj-in .25s ease both; }
+
+.pj-laptop-lid{
+  position:relative; padding:12px 10px 12px;
+  background:linear-gradient(180deg,#1C2340 0%,#0A0E1C 100%);
+  border:2px solid #3A4468; border-bottom:0; border-radius:14px 14px 0 0;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.12);
+}
+/* kamera */
+.pj-laptop-lid::before{
+  content:""; position:absolute; top:4px; left:50%; width:4px; height:4px; margin-left:-2px;
+  border-radius:50%; background:#3A4468;
+}
+/* tinggi layar mengikuti gambar asli: tidak ada yang terpotong */
+.pj-laptop-screen{ border-radius:4px; overflow:hidden; line-height:0; background:#000; }
+.pj-laptop-screen img{ display:block; width:100%; height:auto; }
+
+/* badan / engsel laptop */
+.pj-laptop-base{
+  position:relative; height:12px; width:106%; margin-left:-3%;
+  background:linear-gradient(180deg,#E6EBF4 0%,#BAC3D7 55%,#98A3BB 100%);
+  border-radius:0 0 18px 18px / 0 0 12px 12px;
+  box-shadow:0 28px 34px -20px rgba(15,27,51,.6), inset 0 1px 0 #fff;
+}
+/* keterangan layar */
+.pj-laptop-cap{ margin:20px 0 0; text-align:center; font-size:var(--fs-small); font-weight:600; color:var(--muted); }
+
+/* takik buka laptop */
+.pj-laptop-base::before{
+  content:""; position:absolute; top:0; left:50%; width:18%; height:5px; transform:translateX(-50%);
+  background:#A3AEC4; border-radius:0 0 8px 8px;
+}
+
+/* ===== iPhone titanium (2 HP utama + HP di slider, layar rasio 360x800) ===== */
+.pj-phones{ width:100%; display:flex; justify-content:center; align-items:flex-start; gap:clamp(12px,3vw,28px); padding-bottom:4px; }
+.pj-phone{
+  position:relative; flex:1 1 0; min-width:0; max-width:230px; padding:10px;
+  /* rim titanium: terang di sudut, gelap di tengah */
+  background:linear-gradient(145deg,#7A7F89 0%,#34373E 16%,#0D0E12 48%,#2E3138 84%,#6A6F79 100%);
+  border-radius:46px;
+  box-shadow:
+    inset 0 0 0 1.5px rgba(255,255,255,.22),   /* highlight tepi luar */
+    inset 0 0 0 3px rgba(0,0,0,.55),           /* garis gelap di bawah rim */
+    inset 2px 2px 6px rgba(255,255,255,.12),   /* kilap sudut kiri atas */
+    0 40px 54px -30px rgba(15,27,51,.7),
+    0 14px 22px -14px rgba(15,27,51,.5);
+}
+.pj-phones .pj-phone:nth-child(even){ margin-top:56px; }
+
+/* Dynamic Island */
+.pj-phone::after{
+  content:""; position:absolute; z-index:2; top:3.4%; left:50%; width:27%; aspect-ratio:3.4/1;
+  transform:translateX(-50%); border-radius:999px; background:#000;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.05);
+  pointer-events:none;
+}
+
+/* tombol samping titanium: kiri = action + volume, kanan = power */
+.pj-btn{
+  position:absolute; width:3.5px; pointer-events:none;
+  background:linear-gradient(90deg,#14171E 0%,#4A5060 55%,#2A2F3B 100%);
+}
+.pj-btn--action,.pj-btn--volup,.pj-btn--voldown{ left:-3px; border-radius:3px 0 0 3px; }
+.pj-btn--power{ right:-3px; border-radius:0 3px 3px 0; background:linear-gradient(270deg,#14171E 0%,#4A5060 55%,#2A2F3B 100%); }
+.pj-btn--action{ top:13%;   height:3.4%; }
+.pj-btn--volup{  top:19%;   height:6.4%; }
+.pj-btn--voldown{ top:27.5%; height:6.4%; }
+.pj-btn--power{  top:22%;   height:10.5%; }
+
+/* layar: ada bezel hitam tipis di dalam rim titanium */
+.pj-phone img{
+  display:block; width:100%; height:auto; aspect-ratio:360/800; object-fit:cover;
+  border-radius:36px; background:#fff;
+  outline:3px solid #000; outline-offset:0;
+  image-rendering:auto;
+  image-rendering:-webkit-optimize-contrast;   /* downscale lebih tajam */
+}
+.pj-phone-missing{
+  aspect-ratio:360/800; background:#fff; border-radius:36px; display:flex; align-items:center;
+  justify-content:center; text-align:center; padding:14px; font-size:var(--fs-xs); line-height:1.5;
+  color:var(--muted); word-break:break-all; outline:3px solid #000;
+}
+.pj-empty{
+  width:100%; min-height:260px; display:flex; align-items:center; justify-content:center; text-align:center;
+  padding:24px; border:2px dashed var(--line); border-radius:16px; color:var(--muted); font-size:var(--fs-body);
+}
+
+/* ===== Design system: strip palet + tipografi ===== */
+.pj-design{ margin:0 0 88px; }
+.pj-design > .pj-group{ margin-bottom:20px; }
+.pj-ds-block{ margin-top:26px; }
+.pj-ds-block:first-of-type{ margin-top:0; }
+.pj-ds-label{
+  display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin:0 0 12px;
+  font-size:var(--fs-small); font-weight:700; color:var(--ink);
+}
+.pj-ds-label span{ font-weight:500; color:var(--muted); font-size:var(--fs-xs); }
+
+/* palet: satu strip menyatu, panel yang di-hover melebar */
+.pj-palette{
+  list-style:none; margin:0; padding:0; display:flex; height:200px;
+  border:1.5px solid var(--line); border-radius:22px; overflow:hidden;
+}
+.pj-chip{ flex:1 1 0; min-width:0; transition:flex-grow .4s cubic-bezier(.2,.8,.2,1); }
+.pj-chip + .pj-chip{ box-shadow:inset 1px 0 0 rgba(15,27,51,.08); }
+.pj-chip button{
+  all:unset; box-sizing:border-box; width:100%; height:100%; cursor:pointer;
+  display:flex; flex-direction:column; justify-content:flex-end; gap:3px; padding:16px 14px;
+  overflow:hidden; white-space:nowrap;
+}
+.pj-chip button:focus-visible{ outline:3px solid var(--cobalt); outline-offset:-4px; }
+.pj-chip-name{
+  font-size:var(--fs-small); font-weight:700; letter-spacing:.02em;
+  opacity:0; transform:translateY(6px); transition:opacity .25s, transform .25s;
+}
+.pj-chip-hex{
+  font-size:var(--fs-xs); font-weight:600; letter-spacing:.04em; font-variant-numeric:tabular-nums;
+  opacity:.85;
+}
+.pj-chip:hover,.pj-chip:focus-within{ flex-grow:2.6; }
+.pj-chip:hover .pj-chip-name,.pj-chip:focus-within .pj-chip-name{ opacity:1; transform:none; }
+
+/* tipografi: satu kartu, keterangan kecil di atas + nama font tebal | tipis */
+.pj-type{
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px;
+  padding:44px 24px; border:1.5px solid var(--line); border-radius:22px; text-align:center;
+}
+.pj-type-cap{ margin:0; font-size:var(--fs-small); font-weight:500; letter-spacing:.04em; color:var(--muted); }
+.pj-type-name{
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:6px 20px; margin:0;
+  font-size:clamp(1.75rem,4.6vw,2.875rem); line-height:1.1; letter-spacing:-.025em; color:var(--ink);
+}
+.pj-type-name b{ font-weight:700; }
+.pj-type-name i{ display:block; width:3px; height:.85em; border-radius:2px; background:var(--accent); flex:none; }
+.pj-type-name span{ font-weight:400; color:var(--muted); }
+
+/* ===== Slider kartu fitur (HP berframe iPhone) ===== */
+.sc{ margin:0 0 96px; }
+.sc-head{ display:flex; justify-content:space-between; align-items:center; gap:16px; margin-bottom:18px; }
+.sc-head h3{ font-weight:700; margin:0; font-size:var(--fs-h3); letter-spacing:-.02em; line-height:1.15; }
+
+/* tombol kiri/kanan = .gbtn .gbtn--icon (Glassbutton.css) */
+.sc-ctrl{ display:flex; gap:10px; }
+
+.sc-rail{
+  position:relative; list-style:none; margin:0; padding:4px 0 20px; display:flex; gap:16px; overflow-x:auto;
+  scroll-snap-type:x mandatory; scrollbar-width:none;
+}
+.sc-rail::-webkit-scrollbar{ display:none; }
+.sc-rail:focus-visible{ outline:3px solid var(--cobalt); outline-offset:4px; border-radius:20px; }
+
+.sc-card{
+  flex:0 0 calc((100% - 16px) / 2); scroll-snap-align:start; background:transparent; border:1.5px solid var(--line);
+  border-radius:20px; display:grid; grid-template-columns:auto 1fr; align-items:center; gap:22px; padding:20px 22px;
+}
+.sc-shot{ display:flex; justify-content:center; }
+
+/* HP berframe di dalam kartu slider: ukuran tetap, bukan flex */
+.sc-shot .pj-phone{ flex:none; width:176px; max-width:none; border-radius:38px; padding:8px; }
+.sc-shot .pj-phone img,
+.sc-shot .pj-phone .pj-phone-missing{ border-radius:30px; outline-width:2px; }
+
+/* gambar polos (tanpa frame): dipakai bila <Phone framed={false} /> */
+.pj-shot{
+  flex:none; width:150px; border-radius:20px; overflow:hidden; background:#fff;
+  box-shadow:0 0 0 1px rgba(15,27,51,.08), 0 16px 26px -18px rgba(15,27,51,.55);
+}
+.pj-shot img{
+  display:block; width:100%; height:auto; aspect-ratio:360/800; object-fit:cover;
+  image-rendering:auto;
+  image-rendering:-webkit-optimize-contrast;
+}
+.pj-shot .pj-phone-missing{ outline:0; border-radius:0; font-size:.6rem; padding:8px; }
+
+.sc-text h4{ font-weight:700; font-size:var(--fs-h4); line-height:1.25; letter-spacing:-.01em; margin:0 0 6px; }
+.sc-text p{ margin:0; color:var(--muted); font-size:var(--fs-small); line-height:1.7; }
+
+.sc-cta{ display:flex; justify-content:center; gap:12px; margin-top:8px; }
+.sc-cta .gbtn{ gap:12px; padding:5px 5px 5px 22px; font-size:var(--fs-body); }
+.sc-cta .gbtn span{ width:36px; height:36px; border-radius:50%; background:#fff; color:var(--cobalt); display:grid; place-items:center; }
+
+/* ===== Responsive ===== */
+@media (max-width:960px){
+  .pj-case,.pj-case.wide{ grid-template-columns:1fr; gap:32px; padding-bottom:72px; }
+  .pj-case.wide .pj-info{ grid-template-columns:1fr; gap:8px; }
+  .pj-case.wide .pj-side{ margin-top:16px; }
+  .pj-case.rev .pj-visual{ order:0; }
+}
+@media (max-width:720px){
+  .sc-card{ flex:0 0 100%; gap:16px; padding:18px 16px; }
+
+  /* palet jadi tumpukan baris, nama & hex selalu terlihat */
+  .pj-palette{ flex-direction:column; height:auto; }
+  .pj-chip{ flex:none; }
+  .pj-chip + .pj-chip{ box-shadow:inset 0 1px 0 rgba(15,27,51,.08); }
+  .pj-chip button{ flex-direction:row; align-items:center; justify-content:space-between; padding:16px 18px; }
+  .pj-chip-name{ opacity:1; transform:none; }
+  .pj-chip:hover,.pj-chip:focus-within{ flex-grow:0; }
+
+  .pj-type{ padding:32px 16px; }
+}
+@media (max-width:640px){
+  .pj-bar{ margin-bottom:40px; }
+  .pj{ --grid-size:44px; }
+}
+@media (max-width:560px){
+  .pj-cursor,.pj-cell{ display:none; }
+}
+@media (max-width:520px){
+  .pj-feats{ grid-template-columns:1fr; }
+  .pj-wrap{ padding:0 16px; }
+  .pj-visual{ padding:24px 14px; }
+  .pj-case.wide .pj-visual{ padding:24px 12px; }
+  .pj-laptop-lid{ padding:7px 6px 8px; border-radius:9px 9px 0 0; border-width:1.5px; }
+  .pj-laptop-base{ height:8px; }
+  .pj-laptops.multi .pj-laptop:nth-child(even){ margin-top:24px; }
+  .pj-phone{ padding:6px; border-radius:30px; }
+  .pj-phone img,.pj-phone-missing{ border-radius:24px; outline-width:2px; }
+  .pj-btn{ width:2.5px; }
+  .pj-btn--action,.pj-btn--volup,.pj-btn--voldown{ left:-2px; }
+  .pj-btn--power{ right:-2px; }
+  .pj-phones .pj-phone:nth-child(even){ margin-top:36px; }
+  .pj-shot{ width:120px; border-radius:16px; }
+  .sc-shot .pj-phone{ width:128px; border-radius:28px; padding:6px; }
+  .sc-shot .pj-phone img,
+  .sc-shot .pj-phone .pj-phone-missing{ border-radius:22px; }
+  .pj-type-name i{ display:none; }
+}
+@media (prefers-reduced-motion:reduce){
+  .pj-list,.pj-laptop,.pj-cursor,.pj-cell{ animation:none; }
+  .pj-info *, .pj *{ transition:none !important; }
+  .pj-feats li:hover{ transform:none; }
+}

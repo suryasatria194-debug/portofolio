@@ -1,0 +1,82 @@
+/* ==========================================================
+   GLASS BUTTON - dipakai di semua halaman
+   Pakai: className="gbtn" (+ varian di bawah)
+   Varian : gbtn--accent (tombol utama, biru)
+            gbtn--dark   (untuk background gelap)
+   Ukuran : gbtn--sm, gbtn--icon (tombol bulat untuk ikon)
+   ========================================================== */
+.gbtn{
+  --g-ink:#0F1B33;
+  --g-accent:#2747E0;
+
+  position:relative; overflow:hidden; isolation:isolate;
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  padding:12px 28px; border-radius:999px;
+  font-family:inherit; font-size:.875rem; font-weight:600; line-height:1.2; text-decoration:none;
+  color:var(--g-ink); cursor:pointer;
+  background:linear-gradient(145deg,rgba(255,255,255,.75),rgba(255,255,255,.35));
+  border:1px solid rgba(255,255,255,.9);
+  -webkit-backdrop-filter:blur(14px) saturate(160%);
+  backdrop-filter:blur(14px) saturate(160%);
+  box-shadow:0 10px 22px -12px rgba(39,71,224,.45), inset 0 1px 0 #fff;
+  transition:.3s;
+}
+
+/* kilau yang menyapu kiri ke kanan saat hover (berada di bawah teks/ikon) */
+.gbtn::before{
+  content:""; position:absolute; z-index:-1; top:0; left:-100%; width:100%; height:100%;
+  background:linear-gradient(120deg,transparent,rgba(255,255,255,.95),transparent);
+  transition:.6s;
+}
+.gbtn:hover:not(:disabled)::before{ left:100%; }
+
+.gbtn:hover:not(:disabled):not([aria-pressed="true"]){
+  background:linear-gradient(145deg,rgba(39,71,224,.28),rgba(39,71,224,.1));
+  color:var(--g-accent);
+  transform:translateY(-1px);
+}
+.gbtn:active:not(:disabled){ transform:scale(.96); }
+.gbtn:focus-visible{ outline:3px solid var(--g-accent); outline-offset:2px; }
+.gbtn:disabled,.gbtn[aria-disabled="true"]{ opacity:.4; cursor:default; pointer-events:none; }
+
+/* tombol yang sedang aktif / terpilih (aria-pressed="true") */
+.gbtn[aria-pressed="true"]{
+  background:linear-gradient(145deg,#1b2d57,#0F1B33);
+  color:#fff; border-color:rgba(255,255,255,.25);
+  box-shadow:0 10px 20px -10px rgba(15,27,51,.6), inset 0 1px 0 rgba(255,255,255,.2);
+}
+
+/* ===== Varian ===== */
+.gbtn--accent{
+  color:#fff;
+  background:linear-gradient(145deg,rgba(39,71,224,.95),rgba(39,71,224,.7));
+  border-color:rgba(255,255,255,.35);
+  box-shadow:0 12px 24px -12px rgba(39,71,224,.8), inset 0 1px 0 rgba(255,255,255,.4);
+}
+.gbtn--accent::before{ background:linear-gradient(120deg,transparent,rgba(255,255,255,.5),transparent); }
+.gbtn--accent:hover:not(:disabled):not([aria-pressed="true"]){
+  background:linear-gradient(145deg,rgba(39,71,224,1),rgba(39,71,224,.8));
+  color:#fff;
+}
+
+.gbtn--dark{
+  color:#fff;
+  background:rgba(255,255,255,.08);
+  border-color:rgba(255,255,255,.2);
+  -webkit-backdrop-filter:blur(12px);
+  backdrop-filter:blur(12px);
+  box-shadow:none;
+}
+.gbtn--dark::before{ background:linear-gradient(120deg,transparent,rgba(255,255,255,.4),transparent); }
+.gbtn--dark:hover:not(:disabled):not([aria-pressed="true"]){
+  background:rgba(255,255,255,.16);
+  color:#fff;
+}
+
+/* ===== Ukuran ===== */
+.gbtn--sm{ padding:8px 16px; font-size:.75rem; font-weight:500; }
+.gbtn--icon{ width:44px; height:44px; padding:0; }
+
+@media (prefers-reduced-motion:reduce){
+  .gbtn,.gbtn::before{ transition:none; }
+}

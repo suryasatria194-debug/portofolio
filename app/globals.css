@@ -1,0 +1,108 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --gutter: max(clamp(20px, 6vw, 80px), calc((100vw - 1240px) / 2));
+
+  /* Global Font */
+  --font-primary: 'Montserrat', sans-serif;
+
+  /* Pengaturan ukuran gambar */
+  --image-max-width: 100%;
+  --logo-width: 280px;
+  --logo-height: auto;
+}
+
+html {
+  background: #f3f4f6;
+  scrollbar-gutter: stable;
+  font-family: var(--font-primary);
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  color: #2a2a2f;
+  font-family: var(--font-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background: transparent;
+}
+
+/* Semua elemen mengikuti font Montserrat */
+*,
+*::before,
+*::after {
+  font-family: inherit;
+}
+
+/* Wrapper halaman */
+main {
+  display: block;
+  width: 100%;
+}
+
+/* Padding Home */
+section#home.hm {
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
+}
+
+/* Pengaturan gambar umum */
+img {
+  height: auto;
+}
+
+/* Logo: gunakan className="logo" pada gambar */
+img.logo {
+  display: block;
+  width: var(--logo-width);
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Background global */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      36% 46% at 76% 60%,
+      #f5b5a8,
+      rgba(245, 181, 168, 0) 100%
+    ),
+    radial-gradient(
+      30% 38% at 24% 28%,
+      #f9cfc9,
+      rgba(249, 207, 201, 0) 100%
+    ),
+    #f3f4f6;
+}
+
+a {
+  color: inherit;
+}
+
+/* Responsive untuk layar kecil */
+@media (max-width: 600px) {
+  :root {
+    --logo-width: 200px;
+  }
+}
