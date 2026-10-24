@@ -329,7 +329,7 @@ const PROJECTS: Project[] = [
       {
         title: "Emergency Help",
         text: "Emergency contacts and ambulance requests are one tap away, so help is easy to reach when it matters most.",
-        image: "/projects/JASAKTI/URGEnT.png",
+        image: "/projects/JASAKTI/URGENT.png",
       },
       {
         title: "Food Price Watch",
